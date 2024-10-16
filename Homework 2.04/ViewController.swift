@@ -14,40 +14,48 @@ final class ViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
-    @IBOutlet var pointOfRedLabel: UILabel!
-    @IBOutlet var pointOfGreenLabel: UILabel!
-    @IBOutlet var pointOfBlueLabel: UILabel!
+    @IBOutlet var redLabel: UILabel!
+    @IBOutlet var greenLabel: UILabel!
+    @IBOutlet var blueLabel: UILabel!
     
-    @IBOutlet var changingColorView: UIView!
+    @IBOutlet var colorView: UIView!
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        changingColorView.layer.cornerRadius = 25
         
-        pointOfRedLabel.text = redSlider.value.formatted()
-        pointOfGreenLabel.text = greenSlider.value.formatted()
-        pointOfBlueLabel.text = blueSlider.value.formatted()
+        colorView.layer.cornerRadius = 15
+        setColor()
+        
+        redLabel.text = string(from: redSlider)
+        greenLabel.text = string(from: greenSlider)
+        blueLabel.text = string(from: blueSlider)
     }
     
     // MARK: - IB Actions
-    @IBAction func changeViewColor() {
-        let red = CGFloat(redSlider.value)
-        let green = CGFloat(greenSlider.value)
-        let blue = CGFloat(blueSlider.value)
+    @IBAction func sliderAction(_ sender: UISlider) {
+        setColor()
         
-        changingColorView.backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: 1)
+        switch sender {
+        case redSlider:
+            redLabel.text = string(from: redSlider)
+        case greenSlider:
+            greenLabel.text = string(from: greenSlider)
+        default:
+            blueLabel.text = string(from: blueSlider)
+        }
+    }
+    // MARK: - Private Methods
+    private func setColor() {
+        colorView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1
+        )
     }
     
-    @IBAction func redSliderAction() {
-            pointOfRedLabel.text = redSlider.value.formatted()
-    }
-    
-    @IBAction func greenSliderAction() {
-        pointOfGreenLabel.text = greenSlider.value.formatted()
-    }
-    
-    @IBAction func blueSliderAction() {
-        pointOfBlueLabel.text = blueSlider.value.formatted()
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
 }
